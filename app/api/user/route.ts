@@ -12,10 +12,12 @@ export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
     const userId = searchParams.get('id');
     if (userId) {
-      const response = await fetch(`https:      const user = await response.json();
+      const response = await fetch(`https://api.example.com/users/${userId}`);
+      const user = await response.json();
       return NextResponse.json(user);
     }
-    const response = await fetch('https:    const users = await response.json();
+    const response = await fetch('https://api.example.com/users');
+    const users = await response.json();
     return NextResponse.json(users);
   } catch (error) {
     console.error('Error fetching user data:', error);

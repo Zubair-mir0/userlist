@@ -41,7 +41,8 @@ export default function UserDetailsPage() {
     }
     const fetchUser = async () => {
       try {
-        const res = await fetch(`https:        if (!res.ok) {
+        const res = await fetch(`https://jsonplaceholder.typicode.com/users/${userId}`);
+        if (!res.ok) {
           throw new Error('Failed to fetch user');
         }
         const data = await res.json();

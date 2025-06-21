@@ -1,8 +1,9 @@
 'use client';
-import { useState } from 'react';
+import React from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { findUserByEmail } from '@/lib/users';
-import { setAuthToken } from '@/lib/auth';
+import { setAuthToken, isAuthenticated } from '@/lib/auth';
 import Link from 'next/link';
 export default function LoginPage() {
   const [email, setEmail] = useState('');
@@ -12,35 +13,16 @@ export default function LoginPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
-    
     try {
-     
-      if (!email.trim()) {
-        throw new Error('Please enter your email address');
+      const user = findUserByEmail(email);
+      if (!user || user.password !== password) {
+        throw new Error('Invalid credentials');
       }
-      if (!password) {
-        throw new Error('Please enter your password');
-      }
-
-      const user = findUserByEmail(email.trim().toLowerCase());
-      
-      if (!user) {
-        throw new Error('No account found with this email address');
-      }
-      
-      if (user.password !== password) {
-        throw new Error('Incorrect password. Please try again.');
-      }
-      
-      // All users can log in, but their access to specific routes is controlled by the middleware
       setAuthToken(user);
       router.push('/dashboard');
       router.refresh();
-      
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'An unexpected error occurred. Please try again.';
-      setError(errorMessage);
-      console.error('Login error:', err);
+      setError('Failed to log in. Please check your credentials.');
     }
   };
   return (

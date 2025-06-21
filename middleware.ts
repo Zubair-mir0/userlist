@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-import { isAuthenticated, isAllowed } from './lib/auth';
+import { isAuthenticated, isAllowed } from '@/lib/auth';
 const publicPaths = ['/', '/login', '/signup'];
 const adminOnlyPaths = ['/users', '/user-details'];
 
