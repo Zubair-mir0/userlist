@@ -32,11 +32,7 @@ export default function LoginPage() {
         throw new Error('Incorrect password. Please try again.');
       }
       
-      if (!user.allowed) {
-        throw new Error('This account is not authorized to access the dashboard');
-      }
-      
-      // If we get here, login is successful
+      // All users can log in, but their access to specific routes is controlled by the middleware
       setAuthToken(user);
       router.push('/dashboard');
       router.refresh();
